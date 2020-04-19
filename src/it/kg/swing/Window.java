@@ -13,9 +13,16 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 
+import it.kg.business.Controller;
+import java.awt.event.ActionListener;
+import java.util.List;
+import java.awt.event.ActionEvent;
+
 public class Window {
 
 	private JFrame frame;
+	private JLabel displayLabel;
+	private Controller controller;
 
 	/**
 	 * Launch the application.
@@ -37,6 +44,7 @@ public class Window {
 	 * Create the application.
 	 */
 	public Window() {
+		this.controller = new Controller();
 		initialize();
 	}
 
@@ -66,6 +74,13 @@ public class Window {
 		panel.add(eightLabel, gbc_eightLabel);
 		
 		JToggleButton a8 = new JToggleButton(" ");
+		a8.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(!controller.move("a8")) {
+					displayLabel.setText("INVALID MOVE");
+				}
+			}
+		});
 		GridBagConstraints gbc_a8 = new GridBagConstraints();
 		gbc_a8.insets = new Insets(0, 0, 5, 5);
 		gbc_a8.gridx = 2;
@@ -73,6 +88,13 @@ public class Window {
 		panel.add(a8, gbc_a8);
 		
 		JToggleButton b8 = new JToggleButton(" ");
+		b8.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(!controller.move("b8")) {
+					displayLabel.setText("INVALID MOVE");
+				}
+			}
+		});
 		b8.setBackground(Color.BLACK);
 		b8.setForeground(Color.BLACK);
 		GridBagConstraints gbc_b8 = new GridBagConstraints();
@@ -162,6 +184,13 @@ public class Window {
 		panel.add(c7, gbc_c7);
 		
 		JToggleButton d7 = new JToggleButton(" ");
+		d7.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(!controller.move("d7")) {
+					displayLabel.setText("INVALID MOVE");
+				}
+			}
+		});
 		GridBagConstraints gbc_d7 = new GridBagConstraints();
 		gbc_d7.insets = new Insets(0, 0, 5, 5);
 		gbc_d7.gridx = 5;
@@ -215,6 +244,13 @@ public class Window {
 		panel.add(a6, gbc_a6);
 		
 		JToggleButton b6 = new JToggleButton(" ");
+		b6.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(!controller.move("b6")) {
+					displayLabel.setText("INVALID MOVE");
+				}
+			}
+		});
 		b6.setForeground(Color.BLACK);
 		b6.setBackground(Color.BLACK);
 		GridBagConstraints gbc_b6 = new GridBagConstraints();
@@ -682,11 +718,25 @@ public class Window {
 		gbc_hLabel.gridy = 9;
 		panel.add(hLabel, gbc_hLabel);
 		
+		this.displayLabel = new JLabel("");
+		GridBagConstraints gbc_labelLabel = new GridBagConstraints();
+		gbc_labelLabel.insets = new Insets(0, 0, 5, 0);
+		gbc_labelLabel.gridx = 10;
+		gbc_labelLabel.gridy = 9;
+		panel.add(displayLabel, gbc_labelLabel);
+		
 		JButton deleteMove = new JButton("delete last move");
+		deleteMove.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				List<String> coordinates = controller.getCoordinates();
+				coordinates.remove(coordinates.size()-1);
+				controller.setCoordinates(coordinates);
+			}
+		});
 		GridBagConstraints gbc_deleteMove = new GridBagConstraints();
 		gbc_deleteMove.gridx = 10;
 		gbc_deleteMove.gridy = 10;
 		panel.add(deleteMove, gbc_deleteMove);
 	}
-
+	
 }
