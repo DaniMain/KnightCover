@@ -1,7 +1,6 @@
 package it.kg.swing;
 
 import java.awt.BorderLayout;
-import java.awt.Button;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
@@ -10,6 +9,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -519,11 +519,12 @@ public class Window {
 		JButton deleteMove = new JButton("DELETE LAST MOVE");
 		deleteMove.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(!controller.getCoordinates().isEmpty()) {
-					String coordinateRemoved = controller.getCoordinates().remove(controller.getCoordinates().size()-1);
+				List<String> coordinates = controller.getCoordinates();
+				if(!coordinates.isEmpty()) {
+					String coordinateRemoved = coordinates.remove(coordinates.size()-1);
 					buttons.get(coordinateRemoved).setSelected(false);
 					displayLabel.setText("");
-					for(String coordinate: controller.getCoordinates()) {
+					for(String coordinate: coordinates) {
 						buttons.get(coordinate).setUI(new MetalToggleButtonUI() {
 							@Override
 							protected Color getSelectColor() {
@@ -531,12 +532,14 @@ public class Window {
 							}
 						});
 					}
-					buttons.get(controller.getCoordinates().get(controller.getCoordinates().size()-1)).setUI(new MetalToggleButtonUI() {
-						@Override
-						protected Color getSelectColor() {
-							return Color.RED;
-						}
-					});
+					if(!coordinates.isEmpty()) {
+						buttons.get(coordinates.get(coordinates.size()-1)).setUI(new MetalToggleButtonUI() {
+							@Override
+							protected Color getSelectColor() {
+								return Color.RED;
+							}
+						});
+					}
 				}
 			}
 		});
@@ -632,18 +635,6 @@ public class Window {
 		gbc_h3.gridx = 9;
 		gbc_h3.gridy = 6;
 		panel.add(h3, gbc_h3);
-		
-		JButton endTestButton = new JButton("test end");
-		endTestButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				launchEndWindow();
-			}
-		});
-		GridBagConstraints gbc_endTestButton = new GridBagConstraints();
-		gbc_endTestButton.insets = new Insets(0, 0, 5, 0);
-		gbc_endTestButton.gridx = 10;
-		gbc_endTestButton.gridy = 6;
-		panel.add(endTestButton, gbc_endTestButton);
 
 		JLabel twoLabel = new JLabel("2");
 		GridBagConstraints gbc_twoLabel = new GridBagConstraints();
@@ -731,18 +722,6 @@ public class Window {
 		gbc_h2.gridx = 9;
 		gbc_h2.gridy = 7;
 		panel.add(h2, gbc_h2);
-		
-		Button showListButton = new Button("show list");
-		showListButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				System.out.println(controller.getCoordinates());
-			}
-		});
-		GridBagConstraints gbc_showListButton = new GridBagConstraints();
-		gbc_showListButton.insets = new Insets(0, 0, 5, 0);
-		gbc_showListButton.gridx = 10;
-		gbc_showListButton.gridy = 7;
-		panel.add(showListButton, gbc_showListButton);
 
 		JLabel oneLabel = new JLabel("1");
 		GridBagConstraints gbc_oneLabel = new GridBagConstraints();
@@ -909,7 +888,8 @@ public class Window {
 					if (controller.getStatus().equals(Controller.STATUS_END)) {
 						launchEndWindow();
 					}
-					for(JToggleButton b: buttons.values()) {
+					for(String c: controller.getCoordinates()){
+						JToggleButton b = buttons.get(c);
 						b.setUI(new MetalToggleButtonUI() {
 							@Override
 							protected Color getSelectColor() {
