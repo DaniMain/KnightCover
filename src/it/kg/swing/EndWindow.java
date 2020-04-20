@@ -40,6 +40,7 @@ public class EndWindow {
 	 */
 	private void initialize() {
 		frame = new JFrame();
+		frame.setTitle("You've done it!");
 		frame.setBounds(530, 330, 300, 100);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));

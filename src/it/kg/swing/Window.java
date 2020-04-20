@@ -10,7 +10,6 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
-import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -23,8 +22,8 @@ import it.kg.business.Controller;
 
 public class Window {
 
-	private JFrame frame;
 	private JLabel displayLabel;
+	private JFrame frame;
 	private Controller controller;
 	private HashMap<String, JToggleButton> buttons;
 
@@ -58,6 +57,7 @@ public class Window {
 	 */
 	private void initialize() {
 		frame = new JFrame();
+		frame.setTitle("Knight Cover 1.0");
 		frame.setBounds(400, 200, 538, 361);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
@@ -420,6 +420,14 @@ public class Window {
 		gbc_h5.gridx = 9;
 		gbc_h5.gridy = 4;
 		panel.add(h5, gbc_h5);
+		
+		this.displayLabel = new JLabel("");
+		displayLabel.setText("");
+		GridBagConstraints gbc_displayLabel = new GridBagConstraints();
+		gbc_displayLabel.insets = new Insets(0, 0, 5, 0);
+		gbc_displayLabel.gridx = 10;
+		gbc_displayLabel.gridy = 4;
+		panel.add(displayLabel, gbc_displayLabel);
 
 		JLabel fourLabel = new JLabel("4");
 		GridBagConstraints gbc_fourLabel = new GridBagConstraints();
@@ -507,6 +515,36 @@ public class Window {
 		gbc_h4.gridx = 9;
 		gbc_h4.gridy = 5;
 		panel.add(h4, gbc_h4);
+		
+		JButton deleteMove = new JButton("DELETE LAST MOVE");
+		deleteMove.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(!controller.getCoordinates().isEmpty()) {
+					String coordinateRemoved = controller.getCoordinates().remove(controller.getCoordinates().size()-1);
+					buttons.get(coordinateRemoved).setSelected(false);
+					displayLabel.setText("");
+					for(String coordinate: controller.getCoordinates()) {
+						buttons.get(coordinate).setUI(new MetalToggleButtonUI() {
+							@Override
+							protected Color getSelectColor() {
+								return Color.GREEN;
+							}
+						});
+					}
+					buttons.get(controller.getCoordinates().get(controller.getCoordinates().size()-1)).setUI(new MetalToggleButtonUI() {
+						@Override
+						protected Color getSelectColor() {
+							return Color.RED;
+						}
+					});
+				}
+			}
+		});
+		GridBagConstraints gbc_deleteMove = new GridBagConstraints();
+		gbc_deleteMove.insets = new Insets(0, 0, 5, 0);
+		gbc_deleteMove.gridx = 10;
+		gbc_deleteMove.gridy = 5;
+		panel.add(deleteMove, gbc_deleteMove);
 
 		JLabel threeLabel = new JLabel("3");
 		GridBagConstraints gbc_threeLabel = new GridBagConstraints();
@@ -594,6 +632,18 @@ public class Window {
 		gbc_h3.gridx = 9;
 		gbc_h3.gridy = 6;
 		panel.add(h3, gbc_h3);
+		
+		JButton endTestButton = new JButton("test end");
+		endTestButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				launchEndWindow();
+			}
+		});
+		GridBagConstraints gbc_endTestButton = new GridBagConstraints();
+		gbc_endTestButton.insets = new Insets(0, 0, 5, 0);
+		gbc_endTestButton.gridx = 10;
+		gbc_endTestButton.gridy = 6;
+		panel.add(endTestButton, gbc_endTestButton);
 
 		JLabel twoLabel = new JLabel("2");
 		GridBagConstraints gbc_twoLabel = new GridBagConstraints();
@@ -681,6 +731,18 @@ public class Window {
 		gbc_h2.gridx = 9;
 		gbc_h2.gridy = 7;
 		panel.add(h2, gbc_h2);
+		
+		Button showListButton = new Button("show list");
+		showListButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println(controller.getCoordinates());
+			}
+		});
+		GridBagConstraints gbc_showListButton = new GridBagConstraints();
+		gbc_showListButton.insets = new Insets(0, 0, 5, 0);
+		gbc_showListButton.gridx = 10;
+		gbc_showListButton.gridy = 7;
+		panel.add(showListButton, gbc_showListButton);
 
 		JLabel oneLabel = new JLabel("1");
 		GridBagConstraints gbc_oneLabel = new GridBagConstraints();
@@ -769,18 +831,6 @@ public class Window {
 		gbc_h1.gridy = 8;
 		panel.add(h1, gbc_h1);
 
-		JButton endTestButton = new JButton("test end");
-		endTestButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				launchEndWindow();
-			}
-		});
-		GridBagConstraints gbc_endTestButton = new GridBagConstraints();
-		gbc_endTestButton.insets = new Insets(0, 0, 5, 0);
-		gbc_endTestButton.gridx = 10;
-		gbc_endTestButton.gridy = 8;
-		panel.add(endTestButton, gbc_endTestButton);
-
 		JLabel aLabel = new JLabel("A");
 		GridBagConstraints gbc_aLabel = new GridBagConstraints();
 		gbc_aLabel.insets = new Insets(0, 0, 5, 5);
@@ -836,41 +886,6 @@ public class Window {
 		gbc_hLabel.gridx = 9;
 		gbc_hLabel.gridy = 9;
 		panel.add(hLabel, gbc_hLabel);
-
-		this.displayLabel = new JLabel("");
-		GridBagConstraints gbc_labelLabel = new GridBagConstraints();
-		gbc_labelLabel.insets = new Insets(0, 0, 5, 0);
-		gbc_labelLabel.gridx = 10;
-		gbc_labelLabel.gridy = 9;
-		panel.add(displayLabel, gbc_labelLabel);
-
-		JButton deleteMove = new JButton("DELETE LAST MOVE");
-		deleteMove.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (!controller.getCoordinates().isEmpty()) {
-					List<String> coordinates = controller.getCoordinates();
-					String coordinateRemoved = coordinates.remove(coordinates.size() - 1);
-					controller.setCoordinates(coordinates);
-					buttons.get(coordinateRemoved).setSelected(false);
-				}
-			}
-		});
-		GridBagConstraints gbc_deleteMove = new GridBagConstraints();
-		gbc_deleteMove.insets = new Insets(0, 0, 5, 0);
-		gbc_deleteMove.gridx = 10;
-		gbc_deleteMove.gridy = 10;
-		panel.add(deleteMove, gbc_deleteMove);
-
-		Button showListButton = new Button("show list");
-		showListButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				System.out.println(controller.getCoordinates());
-			}
-		});
-		GridBagConstraints gbc_showListButton = new GridBagConstraints();
-		gbc_showListButton.gridx = 10;
-		gbc_showListButton.gridy = 11;
-		panel.add(showListButton, gbc_showListButton);
 	}
 
 	public void implementJToogleButton(JToggleButton button, String coordinate) {
@@ -878,13 +893,13 @@ public class Window {
 		button.setUI(new MetalToggleButtonUI() {
 			@Override
 			protected Color getSelectColor() {
-				return Color.GREEN;
+				return Color.RED;
 			}
 		});
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (!controller.move(coordinate)) {
-					displayLabel.setText("INVALID MOVE " + coordinate);
+					displayLabel.setText("INVALID MOVE: " + coordinate);
 					if (controller.getStatus() == Controller.STATUS_LAST_MOVE) {
 						button.setSelected(true);
 					} else if (controller.getStatus() == Controller.STATUS_INVALID_MOVE) {
@@ -894,6 +909,20 @@ public class Window {
 					if (controller.getStatus().equals(Controller.STATUS_END)) {
 						launchEndWindow();
 					}
+					for(JToggleButton b: buttons.values()) {
+						b.setUI(new MetalToggleButtonUI() {
+							@Override
+							protected Color getSelectColor() {
+								return Color.GREEN;
+							}
+						});
+					}
+					button.setUI(new MetalToggleButtonUI() {
+						@Override
+						protected Color getSelectColor() {
+							return Color.RED;
+						}
+					});
 					displayLabel.setText("");
 				}
 			}
@@ -903,6 +932,7 @@ public class Window {
 	private void launchEndWindow() {
 		EndWindow end = new EndWindow();
 		end.main();
+		this.frame.setVisible(false);
 	}
 
 }
