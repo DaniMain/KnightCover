@@ -5,6 +5,7 @@ import java.util.List;
 
 public class Controller {
 
+	private String playerName;
 	private List<String> coordinates;
 	private String status;
 
@@ -93,6 +94,14 @@ public class Controller {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public String getPlayerName() {
+		return playerName;
+	}
+
+	public void setPlayerName(String playerName) {
+		this.playerName = playerName;
 	}
 
 }
