@@ -420,7 +420,7 @@ public class Window {
 		gbc_h5.gridx = 9;
 		gbc_h5.gridy = 4;
 		panel.add(h5, gbc_h5);
-		
+
 		this.displayLabel = new JLabel("");
 		displayLabel.setText("");
 		GridBagConstraints gbc_displayLabel = new GridBagConstraints();
@@ -515,16 +515,16 @@ public class Window {
 		gbc_h4.gridx = 9;
 		gbc_h4.gridy = 5;
 		panel.add(h4, gbc_h4);
-		
+
 		JButton deleteMove = new JButton("DELETE LAST MOVE");
 		deleteMove.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				List<String> coordinates = controller.getCoordinates();
-				if(!coordinates.isEmpty()) {
-					String coordinateRemoved = coordinates.remove(coordinates.size()-1);
+				if (!coordinates.isEmpty()) {
+					String coordinateRemoved = coordinates.remove(coordinates.size() - 1);
 					buttons.get(coordinateRemoved).setSelected(false);
 					displayLabel.setText("");
-					for(String coordinate: coordinates) {
+					for (String coordinate : coordinates) {
 						buttons.get(coordinate).setUI(new MetalToggleButtonUI() {
 							@Override
 							protected Color getSelectColor() {
@@ -532,8 +532,8 @@ public class Window {
 							}
 						});
 					}
-					if(!coordinates.isEmpty()) {
-						buttons.get(coordinates.get(coordinates.size()-1)).setUI(new MetalToggleButtonUI() {
+					if (!coordinates.isEmpty()) {
+						buttons.get(coordinates.get(coordinates.size() - 1)).setUI(new MetalToggleButtonUI() {
 							@Override
 							protected Color getSelectColor() {
 								return Color.RED;
@@ -882,7 +882,12 @@ public class Window {
 					if (controller.getStatus() == Controller.STATUS_LAST_MOVE) {
 						button.setSelected(true);
 					} else if (controller.getStatus() == Controller.STATUS_INVALID_MOVE) {
-						button.setSelected(false);
+						if(!controller.getCoordinates().contains(coordinate)) {
+							button.setSelected(false);
+						}
+						else {
+							button.setSelected(true);
+						}
 					}
 				} else {
 					if (controller.getStatus().equals(Controller.STATUS_END)) {
