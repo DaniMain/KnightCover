@@ -5,27 +5,23 @@ import java.util.List;
 
 public class Controller {
 
-//	private boolean[][] chessboard;
 	private List<String> coordinates;
 	private String status;
 
 	public static final String STATUS_OK = "OK";
 	public static final String STATUS_LAST_MOVE = "LAST_MOVE";
 	public static final String STATUS_INVALID_MOVE = "INVALID_MOVE";
+	public static final String STATUS_END = "END";
 
 	public Controller() {
-//		this.chessboard = new boolean[8][8];
-//		this.inizialize(this.chessboard);
 		this.coordinates = new LinkedList<>();
 	}
-
-	@SuppressWarnings("unused")
-	private void inizialize(boolean[][] matrix) {
-		for (boolean[] arr : matrix) {
-			for (boolean b : arr) {
-				b = false;
-			}
+	
+	public boolean isEnded() {
+		if(this.getCoordinates().size()==64) {
+			return true;
 		}
+		return false;
 	}
 
 	public boolean move(String coordinate) {
@@ -46,16 +42,14 @@ public class Controller {
 		}
 		if(this.validate(lastCoordinate, coordinate)) {
 			this.getCoordinates().add(coordinate);
-			this.setStatus(STATUS_OK);
+			if(this.isEnded()) {
+				this.setStatus(STATUS_END);
+			}
+			else{
+				this.setStatus(STATUS_OK);
+			}
 			return true;
 		}
-//		int column = this.extract(coordinate.charAt(0));
-//		int row = Integer.parseInt(coordinate.substring(1,2));
-//		if(!this.getChessboard()[row][column]) {
-//			this.getChessboard()[row][column] = true;
-//			this.getCoordinates().add(coordinate);
-//			return true;
-//		}
 		this.setStatus(STATUS_INVALID_MOVE);
 		return false;
 	}
@@ -84,14 +78,6 @@ public class Controller {
 		}
 		return -1;
 	}
-
-//	public boolean[][] getChessboard() {
-//		return chessboard;
-//	}
-//
-//	public void setChessboard(boolean[][] chessboard) {
-//		this.chessboard = chessboard;
-//	}
 
 	public List<String> getCoordinates() {
 		return coordinates;
