@@ -1,4 +1,4 @@
-package it.kg.swing;
+package it.kg.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
