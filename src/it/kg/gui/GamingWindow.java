@@ -907,7 +907,7 @@ public class GamingWindow {
 	}
 
 	private void launchEndWindow() {
-		this.frame.setVisible(false);
+		this.frame.dispose();
 		new EndWindow(this.controller).main();
 	}
 

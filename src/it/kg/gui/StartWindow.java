@@ -82,7 +82,7 @@ public class StartWindow {
 	}
 	
 	private void launchGamingWindow() {
-		this.frame.setVisible(false);
+		this.frame.dispose();
 		new GamingWindow(this.controller).main();
 	}
 	
